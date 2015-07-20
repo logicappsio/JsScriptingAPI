@@ -1,0 +1,133 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "v1",
+        "title": "JavaScript API",
+        "description": "A simple connector for executing JavaScript expressions."
+    },
+    "host": "localhost:1337",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "paths": {
+        "/Execute": {
+            "post": {
+                "tags": [
+                    "Script"
+                ],
+                "summary": "Execute Script",
+                "description": "Run one or more simple JavaScript expressions. You can pass in an object that contains some context to operate on.",
+                "operationId": "ExecuteScript",
+                "consumes": [
+                    "application/json",
+                    "text/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Parameters for running the script.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RunParameters"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ResultObject"
+                        }
+                    },
+                    "default": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ResultObject"
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/ExecutePollTrigger": {
+            "post": {
+                "tags": [
+                    "Script"
+                ],
+                "summary": "Execute Script Trigger",
+                "description": "Write a simple expression to determine if the Logic app should trigger. If you return false from your expression, the Logic app will not run. If you return anything else, it will run, and, you can use the data that is returned inside that run.",
+                "operationId": "ExecuteScriptTrigger",
+                "consumes": [
+                    "application/json",
+                    "text/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Parameters for running the script.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RunParameters"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ResultObject"
+                        }
+                    },
+                    "default": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ResultObject"
+                        }
+                    }
+                },
+                "deprecated": false,
+                "x-ms-scheduler-trigger" : "poll"
+            }
+        }
+    },
+    "definitions": {
+        "RunParameters": {
+            "type": "object",
+            "properties": {
+                "script": {
+                	"x-ms-summary" : "JavaScript expression",
+                	"description" : "Provide one or more lines of JavaScript code separated by ';'. You can reference any properties you provide in the context object.",
+                    "type": "string"
+                },
+                "context": {
+                    "$ref": "#/definitions/SandboxObject"
+                }
+            }
+        },
+        "SandboxObject": {
+             "x-ms-summary" : "Context Object(s)",
+             "description" : "JSON Object(s) to be passed into script argument.  Can pass in multiple items, but base object must be single object { .. }.  Can be referenced in scripted as object names",
+             "type": "object",
+            "properties" : {},
+            "additionalProperties" : true
+        },
+        "ResultObject": {
+             "x-ms-summary" : "Result object",
+             "description" : "The data that you return from your code. You must include a return statement to have a value be output.",
+             "type": "object",
+            "properties" : {},
+            "additionalProperties" : true
+        }
+    }
+}
