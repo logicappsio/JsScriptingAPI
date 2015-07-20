@@ -41,7 +41,7 @@
       ]
     },
     "gatewayToApiAppSecret": {
-      "defaultValue": "Y3NzY3JpcHRpbmdhcGk=",
+      "defaultValue": "anNzY3JpcHRpbmdhcGk=",
       "type": "securestring"
     }
   },
